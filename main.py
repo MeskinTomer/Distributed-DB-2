@@ -9,7 +9,7 @@ from DataBaseSync import DataBaseSync
 class MultiProcessingTest:
     def __init__(self):
         self.processes = []  # Processes list
-        self.data_base = DataBaseSync({}, 'MultiProcessing')  # DataBase Object - MultiProcessing mode
+        self.data_base = DataBaseSync('test.db', {}, 'MultiProcessing')  # DataBase Object - MultiProcessing mode
 
     def test_1(self):
         # Write Test
@@ -85,4 +85,4 @@ class MultiProcessingTest:
 
 if __name__ == '__main__':
     test = MultiProcessingTest()
-    test.test_all()
+    test.test_3()

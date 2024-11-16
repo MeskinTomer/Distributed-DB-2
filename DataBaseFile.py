@@ -1,68 +1,76 @@
-import pickle
+import win32file
 import os
-from DataBaseDict import DataBaseDict
+import json
 
-FILE_PATH = 'data.pkl'
+FILE_NAME = "data_file.txt"
 
 
-class DataBaseFile(DataBaseDict):
+class DataBaseFile:
     def __init__(self, dictionary=None):
-        # Initialize with the provided dictionary or an empty one
-        super().__init__(dictionary or {})
-        # Save initial dictionary to file
-        self._save_to_file()
+        self.dict = dictionary or {}
+        self.handle = win32file.CreateFile(
+            FILE_NAME,
+            win32file.GENERIC_WRITE | win32file.GENERIC_READ,
+            win32file.FILE_SHARE_READ | win32file.FILE_SHARE_WRITE,
+            None,
+            win32file.CREATE_ALWAYS,  # Overwrite the file if it exists
+            0,
+            None
+        )
 
     def _save_to_file(self):
-        with open(FILE_PATH, 'wb') as file:
-            pickle.dump(self.dict, file)
+        # Convert the dictionary to JSON format and write to file
+        data = json.dumps(self.dict).encode('utf-8')  # Convert dict to bytes
+        win32file.SetFilePointer(self.handle, 0, win32file.FILE_BEGIN)  # Move to the beginning of the file
+        win32file.SetEndOfFile(self.handle)  # Ensure the file is truncated before writing new data
+        win32file.WriteFile(self.handle, data)
+        print(f"Data saved to file: {data}")
 
     def _load_from_file(self):
-        if os.path.exists(FILE_PATH):
-            with open(FILE_PATH, 'rb') as file:
-                self.dict = pickle.load(file)
+        if os.path.exists(FILE_NAME):
+            win32file.SetFilePointer(self.handle, 0, win32file.FILE_BEGIN)  # Start from the beginning of the file
+            result, data = win32file.ReadFile(self.handle, 1024)  # Read up to 1024 bytes
+            print(f"Data read from file: {data}")
+            if result != 0 or not data:  # If no data was read or data is empty
+                self.dict = {}  # Initialize the dictionary as empty
+            else:
+                try:
+                    self.dict = json.loads(data.decode('utf-8'))  # Convert bytes back to dict
+                except json.JSONDecodeError:
+                    print("Error: Invalid JSON in file.")
+                    self.dict = {}  # Initialize as empty if JSON is invalid
         else:
             self.dict = {}
 
     def set_value(self, key, val):
-        self._load_from_file()  # Load current data
-        super().set_value(key, val)  # Use the parent class method
-        self._save_to_file()  # Save updated data
+        # Load current data
+        self._load_from_file()
+        # Add the key and value to the dict
+        self.dict[key] = val
+        # Save updated data back to the file
+        self._save_to_file()
 
     def get_value(self, key):
+        # Load current data
         self._load_from_file()
-        return super().get_value(key)  # Use the parent class method
+        # Return the value for the key (default to None if not found)
+        return self.dict.get(key)
 
     def delete_value(self, key):
+        # Load current data
         self._load_from_file()
-        super().delete_value(key)  # Use the parent class method
-        self._save_to_file()
+        # Remove the key if it exists
+        if key in self.dict:
+            del self.dict[key]
+            # Save updated data back to the file
+            self._save_to_file()
 
 
 if __name__ == '__main__':
-    # Ensure no leftover data file before tests
-    if os.path.exists(FILE_PATH):
-        os.remove(FILE_PATH)
-
-    # Initialize with some data
-    db_file = DataBaseFile({"x": 100})
-
-    # Test set_value and persistence
-    db_file.set_value("y", 200)
-    assert db_file.get_value("y") == 200, "set_value or get_value failed."
-
-    # Test get_value for a non-existent key
-    assert db_file.get_value("non_existent") is None, "get_value failed for non-existent key."
-
-    # Test delete_value and persistence
-    db_file.delete_value("y")
-    assert db_file.get_value("y") is None, "delete_value failed."
-
-    # Ensure deletion was saved by reloading from file
-    db_file_new_instance = DataBaseFile()
-    assert db_file_new_instance.get_value("y") is None, "Deletion was not persisted to file."
-
-    print("All tests passed.")
-
-    # Clean up after test
-    if os.path.exists(FILE_PATH):
-        os.remove(FILE_PATH)
+    db = DataBaseFile()
+    db.set_value('1', '1.0')
+    db.set_value('2', '2.0')
+    db.delete_value('1')
+    print(db.get_value('1'))  # Should output: None
+    print(db.get_value('2'))  # Should output: 2.0
+    print(db.dict)

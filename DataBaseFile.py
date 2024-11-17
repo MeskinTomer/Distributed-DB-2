@@ -24,20 +24,20 @@ class DataBaseFile:
         win32file.SetFilePointer(self.handle, 0, win32file.FILE_BEGIN)  # Move to the beginning of the file
         win32file.SetEndOfFile(self.handle)  # Ensure the file is truncated before writing new data
         win32file.WriteFile(self.handle, data)
-        print(f"Data saved to file: {data}")
+        #print(f"Data saved to file: {data}")
 
     def _load_from_file(self):
         if os.path.exists(FILE_NAME):
             win32file.SetFilePointer(self.handle, 0, win32file.FILE_BEGIN)  # Start from the beginning of the file
             result, data = win32file.ReadFile(self.handle, 1024)  # Read up to 1024 bytes
-            print(f"Data read from file: {data}")
+            #print(f"Data read from file: {data}")
             if result != 0 or not data:  # If no data was read or data is empty
                 self.dict = {}  # Initialize the dictionary as empty
             else:
                 try:
                     self.dict = json.loads(data.decode('utf-8'))  # Convert bytes back to dict
                 except json.JSONDecodeError:
-                    print("Error: Invalid JSON in file.")
+                    #print("Error: Invalid JSON in file.")
                     self.dict = {}  # Initialize as empty if JSON is invalid
         else:
             self.dict = {}

@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="191fb622-293c-401e-8523-a08aa079a340" name="Changes" comment="Initial State - First DB">
-      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    <list default="true" id="191fb622-293c-401e-8523-a08aa079a340" name="Changes" comment="DataBase File winAPI converted">
+      <change afterPath="$PROJECT_DIR$/ThreadingTest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataBaseDict.py" beforeDir="false" afterPath="$PROJECT_DIR$/DataBaseDict.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataBaseFile.py" beforeDir="false" afterPath="$PROJECT_DIR$/DataBaseFile.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataBaseSync.py" beforeDir="false" afterPath="$PROJECT_DIR$/DataBaseSync.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MultiProcessingTest.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ThreadingTest.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,18 +35,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.DataBaseFile.executor": "Run",
-    "Python.DataBaseSync.executor": "Run",
-    "Python.ThreadingTest.executor": "Run",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.DataBaseFile.executor&quot;: &quot;Run&quot;,
+    &quot;Python.DataBaseSync.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ThreadingTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Python.DataBaseFile">
+}</component>
+  <component name="RunManager" selected="Python.ThreadingTest">
     <configuration name="DataBaseFile" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Distributed-DB 2" />
       <option name="ENV_FILES" value="" />
@@ -139,9 +137,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.DataBaseFile" />
-        <item itemvalue="Python.DataBaseSync" />
         <item itemvalue="Python.ThreadingTest" />
+        <item itemvalue="Python.DataBaseSync" />
+        <item itemvalue="Python.DataBaseFile" />
       </list>
     </recent_temporary>
   </component>
@@ -169,11 +167,20 @@
       <option name="project" value="LOCAL" />
       <updated>1731696309480</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="DataBase File winAPI converted">
+      <option name="closed" value="true" />
+      <created>1731793315937</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1731793315937</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial State - First DB" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial State - First DB" />
+    <MESSAGE value="DataBase File winAPI converted" />
+    <option name="LAST_COMMIT_MESSAGE" value="DataBase File winAPI converted" />
   </component>
 </project>

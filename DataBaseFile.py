@@ -7,16 +7,18 @@ FILE_NAME = "data_file.txt"
 
 class DataBaseFile:
     def __init__(self, dictionary=None):
-        self.dict = dictionary or {}
+        self.dict = {}
         self.handle = win32file.CreateFile(
             FILE_NAME,
             win32file.GENERIC_WRITE | win32file.GENERIC_READ,
             win32file.FILE_SHARE_READ | win32file.FILE_SHARE_WRITE,
             None,
-            win32file.CREATE_ALWAYS,  # Overwrite the file if it exists
+            win32file.OPEN_ALWAYS,  # Overwrite the file if it exists
             0,
             None
         )
+
+        self._load_from_file()
 
     def _save_to_file(self):
         # Convert the dictionary to JSON format and write to file

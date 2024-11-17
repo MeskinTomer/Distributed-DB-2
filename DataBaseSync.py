@@ -4,9 +4,10 @@ The Python Class that implements the synchronized database
 import time
 import win32event
 import win32con
-import win32file
 from DataBaseFile import DataBaseFile
 import logging
+import sys
+import socket
 
 MAX_READERS_COUNT = 10
 
@@ -14,11 +15,8 @@ logging.basicConfig(filename='DataBase.log', level=logging.DEBUG)
 
 
 class DataBaseSync(DataBaseFile):
-    def __init__(self, dictionary=None, mode='Threading'):
-        if dictionary is None:
-            dictionary = {}
-
-        super().__init__(dictionary)
+    def __init__(self, mode='Threading'):
+        super().__init__()
 
         # Threading Mode
         if mode == 'Threading':
@@ -97,4 +95,28 @@ class DataBaseSync(DataBaseFile):
 
 
 if __name__ == "__main__":
-    pass
+    db = DataBaseSync()
+    operation = sys.argv[1]  # Operation type (set/get/delete)
+    key = sys.argv[2]  # Key
+    value = sys.argv[3] if len(sys.argv) > 3 else None  # Value (if any)
+    port = int(sys.argv[-1])  # Last argument is the port number
+
+    if operation == 'Set':
+        db.set_value(key, value)
+        result = f"Set key {key} to value {value} successfully."
+    elif operation == 'Get':
+        value = db.get_value(key)
+        result = f"Retrieved key {key}: value {value}" if value is not None else f"Key {key} not found."
+    elif operation == 'Delete':
+        db.delete_value(key)
+        result = f"Deleted key {key} successfully."
+    else:
+        result = f"Invalid operation: {operation}"
+
+    # Connect to the parent process's socket
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
+            client_socket.connect(('localhost', port))
+            client_socket.sendall(result.encode('utf-8'))  # Send the result
+    except Exception as e:
+        print(f"Error communicating with parent process: {str(e)}")

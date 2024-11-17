@@ -5,7 +5,7 @@ from DataBaseSync import DataBaseSync
 class ThreadingTest:
     def __init__(self):
         self.threads = []  # Threads list
-        self.data_base = DataBaseSync({}, 'Threading')  # DataBase object - Threading mode
+        self.data_base = DataBaseSync('Threading')  # DataBase object - Threading mode
 
     def test_1(self):
         # Write Test

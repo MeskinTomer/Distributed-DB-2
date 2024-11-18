@@ -1,6 +1,7 @@
 """
 The Python Class that implements the synchronized database
 """
+
 import time
 import win32event
 import win32con
@@ -46,7 +47,7 @@ class DataBaseSync(DataBaseFile):
                     # Step 3: Perform the set operation safely
                     super().set_value(key, val)
                     print(f"Set key {key} to value {val} successfully.")
-                    time.sleep(3)
+                    #time.sleep(3)
                 else:
                     print("Failed to acquire all semaphores. Set operation aborted.")
             finally:
@@ -67,7 +68,7 @@ class DataBaseSync(DataBaseFile):
                 # Safely get the value from the database
                 value = super().get_value(key)
                 print(f"Retrieved key {key}: value {value}")
-                time.sleep(3)
+                #time.sleep(3)
                 return value
             finally:
                 # Release the semaphore, making a slot available
@@ -83,7 +84,7 @@ class DataBaseSync(DataBaseFile):
                 # Safely set the value in the database
                 super().delete_value(key)
                 print(f"Deleted key {key} successfully.")
-                time.sleep(3)
+                #time.sleep(3)
             finally:
                 # Release the synchronization object
                 win32event.ReleaseMutex(self.lock)
@@ -95,20 +96,23 @@ class DataBaseSync(DataBaseFile):
 
 
 if __name__ == "__main__":
-    db = DataBaseSync()
+    db = DataBaseSync('MultiProcessing')
     operation = sys.argv[1]  # Operation type (set/get/delete)
     key = sys.argv[2]  # Key
     value = sys.argv[3] if len(sys.argv) > 3 else None  # Value (if any)
     port = int(sys.argv[-1])  # Last argument is the port number
 
     if operation == 'Set':
-        db.set_value(key, value)
+        for i in range(10000):
+            db.set_value(key, value)
         result = f"Set key {key} to value {value} successfully."
     elif operation == 'Get':
-        value = db.get_value(key)
+        for i in range(10000):
+            value = db.get_value(key)
         result = f"Retrieved key {key}: value {value}" if value is not None else f"Key {key} not found."
     elif operation == 'Delete':
-        db.delete_value(key)
+        for i in range(10000):
+            db.delete_value(key)
         result = f"Deleted key {key} successfully."
     else:
         result = f"Invalid operation: {operation}"

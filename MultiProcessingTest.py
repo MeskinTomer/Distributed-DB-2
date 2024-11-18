@@ -54,7 +54,7 @@ class MultiProcessingTest:
             data = client_socket.recv(4096)
             if data:
                 output = data.decode('utf-8')
-                print(f"Process output: {output}")
+                #print(f"Process output: {output}")
         except Exception as e:
             print(f"Error reading output: {str(e)}")
         finally:
@@ -79,12 +79,20 @@ class MultiProcessingTest:
         # Read then Write Test
         operation = 'Get'
         args = ('test3',)
-        t = Thread(target=self.__create_process, args=(operation, args))
-        t.start()
-        self.threads.append(t)
+        for i in range(100):
+            t = Thread(target=self.__create_process, args=(operation, args))
+            t.start()
+            self.threads.append(t)
 
         operation = 'Set'
         args = ('test3', 'complete')
+        for i in range(20):
+            t = Thread(target=self.__create_process, args=(operation, args))
+            t.start()
+            self.threads.append(t)
+
+        operation = 'Set'
+        args = ('unique', 'complete')
         t = Thread(target=self.__create_process, args=(operation, args))
         t.start()
         self.threads.append(t)
@@ -131,13 +139,13 @@ class MultiProcessingTest:
             self.threads.append(t)
 
         operation = 'Set'
-        args = ('test6', 'complete 1')
+        args = ('test6', 'complete1')
         t = Thread(target=self.__create_process, args=(operation, args))
         t.start()
         self.threads.append(t)
 
         operation = 'Set'
-        args = ('test 6', 'complete 2')
+        args = ('test6', 'complete2')
         t = Thread(target=self.__create_process, args=(operation, args))
         t.start()
         self.threads.append(t)
